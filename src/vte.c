@@ -199,8 +199,8 @@ void vte_init(void)
 	if (module == NULL)
 	{
 		gint i;
-		const gchar *sonames[] = {  "libvte.so", "libvte.so.4",
-									"libvte.so.8", "libvte.so.9", NULL };
+		const gchar *sonames[] = {  "libvte.dylib", "libvte.4.dylib",
+									"libvte.8.dylib", "libvte.9.dylib", NULL };
 
 		for (i = 0; sonames[i] != NULL && module == NULL; i++)
 		{
@@ -211,7 +211,7 @@ void vte_init(void)
 	if (module == NULL)
 	{
 		vte_info.have_vte = FALSE;
-		geany_debug("Could not load libvte.so, embedded terminal support disabled");
+		geany_debug("Could not load libvte.dylib, embedded terminal support disabled");
 		return;
 	}
 	else

@@ -468,7 +468,6 @@ nodist_EXTRA_geany_SOURCES = dummy.cxx
 @MINGW_TRUE@			-DGTK \
 @MINGW_TRUE@			-DG_LOG_DOMAIN=\""Geany"\"
 
-@MINGW_FALSE@geany_LDFLAGS = -Wl,--export-dynamic
 @MINGW_TRUE@geany_LDFLAGS = -mwindows -mms-bitfields
 @MINGW_TRUE@WINDRES = $(host_alias)-windres
 all: all-am
@@ -551,7 +550,7 @@ clean-binPROGRAMS:
 	list=`for p in $$list; do echo "$$p"; done | sed 's/$(EXEEXT)$$//'`; \
 	echo " rm -f" $$list; \
 	rm -f $$list
-geany$(EXEEXT): $(geany_OBJECTS) $(geany_DEPENDENCIES) $(EXTRA_geany_DEPENDENCIES) 
+geany$(EXEEXT): $(geany_OBJECTS) $(geany_DEPENDENCIES) $(EXTRA_geany_DEPENDENCIES)
 	@rm -f geany$(EXEEXT)
 	$(AM_V_CXXLD)$(geany_LINK) $(geany_OBJECTS) $(geany_LDADD) $(LIBS)
 
