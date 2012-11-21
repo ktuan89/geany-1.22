@@ -935,7 +935,9 @@ void dialogs_show_open_font()
 static void
 on_input_dialog_show(GtkDialog *dialog, GtkWidget *entry)
 {
+  fprintf(stderr, "Before grab focus\n");
 	gtk_widget_grab_focus(entry);
+  fprintf(stderr, "After grab focus\n");
 }
 
 
@@ -974,6 +976,7 @@ on_input_dialog_response(GtkDialog *dialog, gint response, GtkWidget *entry)
 	gtk_widget_hide(GTK_WIDGET(dialog));
 }
 
+static GtkWidget *text_entry = NULL;
 
 static void add_input_widgets(GtkWidget *dialog, GtkWidget *vbox,
 		const gchar *label_text, const gchar *default_text, gboolean persistent,
@@ -1004,6 +1007,8 @@ static void add_input_widgets(GtkWidget *dialog, GtkWidget *vbox,
 		ui_entry_add_clear_icon(GTK_ENTRY(entry));
 		gtk_container_add(GTK_CONTAINER(vbox), entry);
 	}
+
+	text_entry = entry;
 
 	if (default_text != NULL)
 	{
@@ -1051,9 +1056,12 @@ dialogs_show_input_full(const gchar *title, GtkWindow *parent,
 		gtk_widget_show_all(dialog);
 		return dialog;
 	}
+	fprintf(stderr, "Before show all\n");
 	gtk_widget_show_all(dialog);
-	gtk_dialog_run(GTK_DIALOG(dialog));
-	gtk_widget_destroy(dialog);
+  fprintf(stderr, "After show all\n");
+  // gtk_widget_grab_focus(text_entry);
+	// gtk_dialog_run(GTK_DIALOG(dialog));
+	// gtk_widget_destroy(dialog);
 	return NULL;
 }
 

@@ -283,6 +283,8 @@ void keybindings_show_shortcuts(void);
 
 gboolean keybindings_check_event(GdkEventKey *ev, GeanyKeyBinding *kb);
 
+void keybindings_debug_it(void);
+
 G_END_DECLS
 
 #endif

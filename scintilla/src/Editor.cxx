@@ -145,7 +145,7 @@ Editor::Editor() {
 
 	caretYPolicy = CARET_EVEN;
 	caretYSlop = 0;
-	
+
 	visiblePolicy = 0;
 	visibleSlop = 0;
 
@@ -1658,7 +1658,7 @@ static int WidthStyledText(Surface *surface, ViewStyle &vs, int styleOffset,
 		size_t endSegment = start;
 		while ((endSegment+1 < len) && (static_cast<size_t>(styles[endSegment+1]) == style))
 			endSegment++;
-		width += surface->WidthText(vs.styles[style+styleOffset].font, text + start, 
+		width += surface->WidthText(vs.styles[style+styleOffset].font, text + start,
 			static_cast<int>(endSegment - start + 1));
 		start = endSegment + 1;
 	}
@@ -4333,7 +4333,7 @@ void Editor::DelCharBack(bool allowLineStartDeletion) {
 void Editor::NotifyFocus(bool) {}
 
 void Editor::SetCtrlID(int identifier) {
-	ctrlID = identifier; 
+	ctrlID = identifier;
 }
 
 void Editor::NotifyStyleToNeeded(int endStyleNeeded) {
@@ -6175,13 +6175,13 @@ void Editor::ButtonDown(Point pt, unsigned int curTime, bool shift, bool ctrl, b
 				selectionType = selWord;
 				doubleClick = true;
 			} else if (selectionType == selWord) {
-				// Since we ended up here, we're inside a *triple* click, which should always select 
+				// Since we ended up here, we're inside a *triple* click, which should always select
 				// whole line irregardless of word wrap being enabled or not.
 				selectionType = selWholeLine;
 			} else {
 				if (inSelMargin) {
 					// Selection type is either selSubLine or selWholeLine here and we're inside margin.
-					// If it is selSubLine, we're inside a *double* click and word wrap is enabled, 
+					// If it is selSubLine, we're inside a *double* click and word wrap is enabled,
 					// so we switch to selWholeLine in order to select whole line.
 					if (selectionType == selSubLine)
 						selectionType = selWholeLine;
@@ -6252,7 +6252,7 @@ void Editor::ButtonDown(Point pt, unsigned int curTime, bool shift, bool ctrl, b
 					lineAnchorPos = sel.MainAnchor() - 1;
 				else
 					lineAnchorPos = sel.MainAnchor();
-				// Reset selection type if there is an empty selection. 
+				// Reset selection type if there is an empty selection.
 				// This ensures that we don't end up stuck in previous selection mode, which is no longer valid.
 				// Otherwise, if there's a non empty selection, reset selection type only if it differs from selSubLine and selWholeLine.
 				// This ensures that we continue selecting in the same selection mode.
@@ -9194,11 +9194,11 @@ sptr_t Editor::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam) {
 	case SCI_CHANGELEXERSTATE:
 		pdoc->ChangeLexerState(wParam, lParam);
 		break;
-	
+
 	case SCI_SETIDENTIFIER:
 		SetCtrlID(wParam);
 		break;
-	
+
 	case SCI_GETIDENTIFIER:
 		return GetCtrlID();
 

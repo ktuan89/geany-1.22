@@ -1061,6 +1061,7 @@ G_MODULE_EXPORT void on_go_to_line_activate(GtkMenuItem *menuitem, gpointer user
 	result = dialogs_show_input_goto_line(
 		_("Go to Line"), GTK_WINDOW(main_widgets.window),
 		_("Enter the line you want to go to:"), value);
+  fprintf(stderr, "already exist the dialog\n");
 	if (result != NULL)
 	{
 		GeanyDocument *doc = document_get_current();

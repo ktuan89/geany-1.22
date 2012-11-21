@@ -2206,10 +2206,13 @@ gboolean ScintillaGTK::KeyThis(GdkEventKey *event) {
 	try {
 		//fprintf(stderr, "SC-key: %d %x [%s]\n",
 		//	event->keyval, event->state, (event->length > 0) ? event->string : "empty");
+		fprintf(stderr, "keys: %d %d\n", event->keyval, event->state);
 		if (gtk_im_context_filter_keypress(im_context, event)) {
+      fprintf(stderr, "return 1 here\n");
 			return 1;
 		}
 		if (!event->keyval) {
+      fprintf(stderr, "return true here\n");
 			return true;
 		}
 
@@ -2237,6 +2240,8 @@ gboolean ScintillaGTK::KeyThis(GdkEventKey *event) {
 		bool meta = ctrl;
 		ctrl = alt;
 		alt = (event->state & GDK_MOD5_MASK) != 0;
+    if ((event->state & 268435472) == 268435472) meta = true;
+    fprintf(stderr, "key modifiers: %d %d %d\n", (int) meta, (int) ctrl, (int) alt);
 		bool added = KeyDownWithModifiers(key, (shift ? SCI_SHIFT : 0) |
 		                                       (ctrl ? SCI_CTRL : 0) |
 		                                       (alt ? SCI_ALT : 0) |
@@ -2259,6 +2264,7 @@ gboolean ScintillaGTK::KeyThis(GdkEventKey *event) {
 }
 
 gboolean ScintillaGTK::KeyPress(GtkWidget *widget, GdkEventKey *event) {
+  fprintf(stderr, "key pressed event in ScintillaGTK\n");
 	ScintillaGTK *sciThis = ScintillaFromWidget(widget);
 	return sciThis->KeyThis(event);
 }

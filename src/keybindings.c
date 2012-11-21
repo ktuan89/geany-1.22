@@ -132,7 +132,7 @@ GeanyKeyBinding *keybindings_get_item(GeanyKeyGroup *group, gsize key_id)
  * Menu accels are set in apply_kb_accel(). */
 /** Fills a GeanyKeyBinding struct item.
  * @note Always set @a key and @a mod to 0, otherwise you will likely
- * cause conflicts with the user's custom, other plugin's keybindings or 
+ * cause conflicts with the user's custom, other plugin's keybindings or
  * future default keybindings.
  * @param group Group.
  * @param key_id Keybinding index for the group.
@@ -1172,6 +1172,14 @@ gboolean keybindings_check_event(GdkEventKey *ev, GeanyKeyBinding *kb)
 	return (keyval == kb->key && state == kb->mods);
 }
 
+void keybindings_debug_it(void) {
+  int i;
+  for (i = 0; i < GEANY_KEYS_COUNT; ++i) {
+          if (binding_ids[i].id == GEANY_KEYS_CLIPBOARD_PASTE) {
+            fprintf(stderr, "@@@ after %d\n", binding_ids[i].mods);
+          }
+        }
+}
 
 /* central keypress event handler, almost all keypress events go to this function */
 static gboolean on_key_press_event(GtkWidget *widget, GdkEventKey *ev, gpointer user_data)
@@ -1190,7 +1198,9 @@ static gboolean on_key_press_event(GtkWidget *widget, GdkEventKey *ev, gpointer 
 		document_check_disk_status(doc, FALSE);
 
 	keyval = ev->keyval;
-	state = ev->state & gtk_accelerator_get_default_mod_mask();
+	// state = ev->state & (gtk_accelerator_get_default_mod_mask() | 16); // meta bit on MacOSX
+  state = ev->state & gtk_accelerator_get_default_mod_mask();
+  // geany_debug("key pressed: %d %d %d %d\n", ev->keyval, ev->state, gtk_accelerator_get_default_mod_mask(), state);
 	/* hack to get around that CTRL+Shift+r results in GDK_R not GDK_r */
 	if ((ev->state & GDK_SHIFT_MASK) || (ev->state & GDK_LOCK_MASK))
 		if (keyval >= GDK_A && keyval <= GDK_Z)

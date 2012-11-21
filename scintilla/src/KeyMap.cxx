@@ -5,6 +5,8 @@
 // Copyright 1998-2003 by Neil Hodgson <neilh@scintilla.org>
 // The License.txt file describes the conditions under which this software may be distributed.
 
+#include <stdio.h>
+
 #include "Platform.h"
 
 #include "Scintilla.h"
@@ -35,6 +37,9 @@ void KeyMap::Clear() {
 }
 
 void KeyMap::AssignCmdKey(int key, int modifiers, unsigned int msg) {
+  if (SCI_COPY == msg) {
+    fprintf(stderr, "Override here %d %d", key, modifiers);
+  }
 	if ((len+1) >= alloc) {
 		KeyToCommand *ktcNew = new KeyToCommand[alloc + 5];
 		if (!ktcNew)

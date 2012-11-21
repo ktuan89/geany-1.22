@@ -199,8 +199,7 @@ void vte_init(void)
 	if (module == NULL)
 	{
 		gint i;
-		const gchar *sonames[] = {  "libvte.dylib", "libvte.4.dylib",
-									"libvte.8.dylib", "libvte.9.dylib", NULL };
+		const gchar *sonames[] = {  "/opt/local/lib/libvte.dylib", NULL };
 
 		for (i = 0; sonames[i] != NULL && module == NULL; i++)
 		{
@@ -236,6 +235,12 @@ static void on_vte_realize(void)
 	vf->vte_terminal_im_append_menuitems(VTE_TERMINAL(vc->vte), GTK_MENU_SHELL(vc->im_submenu));
 }
 
+void* (*ktuan_callback) (VteTerminal *terminal);
+
+static void
+ktuan_text_append(GtkWidget *widget, int character, gpointer data) {
+  fprintf(stderr, "geany ---- text inserted here: %d\n", character);
+}
 
 static void create_vte(void)
 {
@@ -274,6 +279,11 @@ static void create_vte(void)
 	g_signal_connect(vte, "commit", G_CALLBACK(vte_commit_cb), NULL);
 	g_signal_connect(vte, "motion-notify-event", G_CALLBACK(on_motion_event), NULL);
 	g_signal_connect(vte, "drag-data-received", G_CALLBACK(vte_drag_data_received), NULL);
+
+  // ktuan hack
+  // void *tmp_obj = ktuan_callback(vte);
+  // g_signal_connect(tmp_obj, "text-changed::insert", G_CALLBACK(
+  g_signal_connect(vte, "ktuan-text-append", G_CALLBACK(ktuan_text_append), NULL);
 
 	vte_start(vte);
 
@@ -435,6 +445,16 @@ static void vte_register_symbols(GModule *mod)
 		g_module_symbol(mod, "vte_terminal_set_cursor_blinks", (void*)&vf->vte_terminal_set_cursor_blinks);
 	g_module_symbol(mod, "vte_terminal_select_all", (void*)&vf->vte_terminal_select_all);
 	g_module_symbol(mod, "vte_terminal_set_audible_bell", (void*)&vf->vte_terminal_set_audible_bell);
+
+  void *x = NULL;
+  void *y = NULL;
+  void *z = NULL;
+  g_module_symbol(mod, "vte_terminal_accessible_new", (void*) &x);
+  g_module_symbol(mod, "emit_text_changed_insert", (void*) &y);
+  g_module_symbol(mod, "just_random_symbol", (void*) &z);
+  fprintf(stderr, "terminal accessibble : %d %d %d\n", (int) x, (int) y, (int) z);
+
+  ktuan_callback = x;
 }
 
 
